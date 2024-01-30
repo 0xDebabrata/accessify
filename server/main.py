@@ -1,3 +1,4 @@
+from threading import Thread
 import uvicorn
 
 from fastapi import FastAPI
@@ -39,11 +40,25 @@ class ProcessElementsBody(BaseModel):
     buttons: Optional[List[str]]
 
 
+def populate_captions(image_index: int, image_url: str, captions: List[str]):
+    """
+    This function is not thread safe if two threads have same image_index.
+    Use with extreme caution.
+    """
+    image_path = download_image(image_url)
+    caption: str = generate_caption(image_path)
+    captions[image_index] = caption
+
+
 @app.post("/process-elements")
 async def read_root(req: ProcessElementsBody):
     accessible_anchors: List[str] = []
-    accessible_images: List[str] = []
     accessible_buttons: List[str] = []
+
+    images_url_list = req.images if req.images is not None else []
+    images_url_count = len(images_url_list)
+    accessible_images: List[str] = [] * images_url_count
+    image_processing_threads: List[Thread] = [] * images_url_count
 
     if req.anchors is not None:
         anchor_output: str = await connectGPT(req.anchors, ElementType.ANCHOR)
@@ -53,11 +68,20 @@ async def read_root(req: ProcessElementsBody):
         button_output: str = await connectGPT(req.buttons, ElementType.BUTTON)
         accessible_buttons = button_output.split("\n")
 
-    if req.images is not None:
-        for image_url in req.images:
-            image_path = download_image(image_url)
-            caption: str = generate_caption(image_path)
-            accessible_images.append(caption)
+    for image_index, image_url in enumerate(images_url_list):
+        th = Thread(
+            target=populate_captions,
+            args=(
+                image_index,
+                image_url,
+                accessible_images,
+            ),
+        )
+        th.start()
+        image_processing_threads[image_index] = th
+
+    for th in image_processing_threads:
+        th.join()
 
     server_response = {
         "anchors": accessible_anchors,
