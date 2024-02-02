@@ -5,6 +5,9 @@ from numpy import argmax
 from functools import lru_cache
 
 from keras.applications.vgg16 import VGG16
+
+# from keras.applications.mobilenet import MobileNet
+
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 from keras.preprocessing.sequence import pad_sequences
@@ -46,10 +49,13 @@ def setup_caption_generator():
 # extract features from each photo in the directory
 def extract_features(filename: str):
     # load the model
+    # TODO: for production, use VGG16 model
     model = VGG16()
+    # model = MobileNet()
+
     # opening and store file in a variable
     # re-structure the model
-    model = Model(inputs=model.inputs, outputs=model.layers[-2].output)
+    model = Model(inputs=model.input, outputs=model.layers[-2].output)
     # load the photo
     image = load_img(filename, target_size=(224, 224))
     # convert the image pixels to a numpy array
