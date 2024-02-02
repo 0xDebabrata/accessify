@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from fastapi.middleware.cors import CORSMiddleware
 
-from sGPT import generate_caption
+from sGPT import generate_caption, extract_features
 from config import get_config
 from src import ElementType
 from src import connectGPT
@@ -52,13 +52,14 @@ def populate_captions(image_index: int, image_url: str, captions: List[str]):
 
 @app.post("/process-elements")
 async def read_root(req: ProcessElementsBody):
+    print(req.images)
     accessible_anchors: List[str] = []
     accessible_buttons: List[str] = []
 
     images_url_list = req.images if req.images is not None else []
     images_url_count = len(images_url_list)
-    accessible_images: List[str] = [] * images_url_count
-    image_processing_threads: List[Thread] = [] * images_url_count
+    accessible_images: List[str] = [""] * images_url_count
+    image_processing_threads: List[Thread | None] = [None] * images_url_count
 
     if req.anchors is not None:
         anchor_output: str = await connectGPT(req.anchors, ElementType.ANCHOR)
@@ -81,7 +82,8 @@ async def read_root(req: ProcessElementsBody):
         image_processing_threads[image_index] = th
 
     for th in image_processing_threads:
-        th.join()
+        if th is not None:
+            th.join()
 
     server_response = {
         "anchors": accessible_anchors,
