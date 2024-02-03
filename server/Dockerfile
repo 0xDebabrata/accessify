@@ -1,13 +1,13 @@
-FROM python:3.12.1-alpine3.19
+FROM python:3
 
-WORKDIR /code
+WORKDIR /usr/src/app
 
 EXPOSE 8080
 
-COPY ./requirements.txt /code/requirements.txt
+COPY requirements.txt ./
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /code
+COPY . .
 
-CMD ["python" , "main.py"]
+CMD ["python" , "./main.py"]
