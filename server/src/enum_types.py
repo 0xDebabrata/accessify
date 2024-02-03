@@ -1,11 +1,11 @@
 from enum import Enum
 
 
-class ElementType(Enum):
+class ElementType(str, Enum):
     BUTTON = "button"
     ANCHOR = "anchor"
 
 
-class RoleType(Enum):
+class RoleType(str, Enum):
     USER = "user"
     SYSTEM = "system"

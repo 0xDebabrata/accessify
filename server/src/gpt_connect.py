@@ -42,8 +42,9 @@ async def connectGPT(elementList: List[str], type: ElementType):
         json=payload,
         auth=BearerAuth(config.OPENAI_API_KEY),
     )
-
-    json_data = response.json()
-    response = json_data.choices[0].message.content
-
-    return response
+    if response.ok:
+        json_data = response.json()
+        model_response = json_data["choices"][0]["message"]["content"]
+        return model_response
+    else:
+        raise Exception("Request to OpenAI threw an error.")

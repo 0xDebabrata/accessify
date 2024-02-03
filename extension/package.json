@@ -7,5 +7,9 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "devstream",
-	"license": "ISC"
+	"license": "ISC",
+	"devDependencies": {
+		"@types/chrome": "^0.0.260",
+		"@types/firefox-webext-browser": "^120.0.0"
+	}
 }
