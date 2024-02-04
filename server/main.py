@@ -95,5 +95,5 @@ async def read_root(req: ProcessElementsBody):
     return server_response
 
 
-if __name__ == "__main__":
-    uvicorn.run(app, port=configuration.SERVER_PORT)
+# if __name__ == "__main__":
+#     uvicorn.run(app, port=configuration.SERVER_PORT)
