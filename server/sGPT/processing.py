@@ -6,8 +6,6 @@ from functools import lru_cache
 
 from keras.applications.vgg16 import VGG16
 
-# from keras.applications.mobilenet import MobileNet
-
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 from keras.preprocessing.sequence import pad_sequences
@@ -19,7 +17,6 @@ MAX_LENGTH = 34
 
 # paths are relative to the directory where main file is located
 MODEL_URL = os.path.abspath("./sGPT/model/model_9.h5")
-MODEL_JSON_URL = os.path.abspath("./sGPT/model/model.json")
 TOKENIZER_URL = os.path.abspath("./sGPT/model/tokenizer.pkl")
 
 
@@ -30,18 +27,6 @@ def setup_caption_generator():
     # load the tokenizer
     with open(TOKENIZER_URL, "rb") as tokenizer_file:
         tokenizer = load(tokenizer_file)
-
-    # opening and store file in a variable
-    # with open(MODEL_JSON_URL, "r", encoding="utf-8") as json_file:
-    #     loaded_model_json = json_file.read()
-
-    # # use Keras model_from_json to make a loaded model
-    # loaded_model = model_from_json(loaded_model_json)
-
-    # # load weights into new model
-    # if loaded_model is not None:
-    #     loaded_model.load_weights(MODEL_URL)
-    #     model = loaded_model
 
     model = load_model(MODEL_URL)
 
