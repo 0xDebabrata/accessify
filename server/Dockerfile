@@ -1,13 +1,13 @@
-FROM python:3.12.1-alpine3.19
+FROM python:3.11-bookworm
 
-WORKDIR /code
+WORKDIR /usr/src/app
 
-EXPOSE 8080
+COPY requirements.txt ./
 
-COPY ./requirements.txt /code/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+EXPOSE $PORT
 
-COPY . /code
+COPY . .
 
-CMD ["python" , "main.py"]
+CMD python -m uvicorn main:app --host 0.0.0.0 --port $PORT

@@ -3,7 +3,8 @@ version: '3.8'
 services:
   accessify:
     build: .
-    ports:
-      - 8080: 8080
     environment:
+      - PORT=8080
       - GPT_CHAT_URL='https://api.openai.com/v1/chat/completions'
+    ports:
+      - "8080:8080"
