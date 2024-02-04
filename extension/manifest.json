@@ -7,11 +7,11 @@
     "service_worker": "background.js"
   },
   "icons": {
-    "128": "assets/logo.png"
+    "128": "assets/logo accessify.png"
   },
   "action": {
     "default_icon": {
-      "128": "assets/logo.png"
+      "128": "assets/logo accessify.png"
     },
     "default_popup": "popup/popup.html"
   },

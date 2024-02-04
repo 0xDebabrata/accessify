@@ -75,8 +75,15 @@ const getUserPreferences = () => {
 }
 
 const improveAccessibility = () => {
-    const userPreferences = getUserPreferences()
     let urls = [], anchorTags = [], img = [], imgTags = []
+    const fetchedAnchorTags = getAnchorTags()
+    urls = fetchedAnchorTags.urls
+    anchorTags = fetchedAnchorTags.anchorTags
+    const fetchedImageTags = getImages()
+    img = fetchedImageTags.img
+    imgTags = fetchedImageTags.imgTags
+    /*
+    const userPreferences = getUserPreferences()
 
     if (userPreferences.anchors) {
       const fetchedAnchorTags = getAnchorTags()
@@ -91,7 +98,7 @@ const improveAccessibility = () => {
 
     console.log(userPreferences)
     console.log(urls)
-    return
+    */
 
     /**
      * 
@@ -134,7 +141,6 @@ improveAccessibility()
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        console.log(request)
         if(request.preferences) {
             console.log(request.preferences)
         }
