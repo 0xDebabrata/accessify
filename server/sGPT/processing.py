@@ -12,7 +12,7 @@ from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 from keras.preprocessing.sequence import pad_sequences
 from keras.applications.vgg16 import preprocess_input
-from keras.models import Model, model_from_json
+from keras.models import Model, load_model
 
 # pre-define the max sequence length (from training)
 MAX_LENGTH = 34
@@ -25,23 +25,25 @@ TOKENIZER_URL = os.path.abspath("./sGPT/model/tokenizer.pkl")
 
 @lru_cache
 def setup_caption_generator():
-    model, tokenizer = None, None
+    tokenizer = None, None
 
     # load the tokenizer
     with open(TOKENIZER_URL, "rb") as tokenizer_file:
         tokenizer = load(tokenizer_file)
 
     # opening and store file in a variable
-    with open(MODEL_JSON_URL, "r", encoding="utf-8") as json_file:
-        loaded_model_json = json_file.read()
+    # with open(MODEL_JSON_URL, "r", encoding="utf-8") as json_file:
+    #     loaded_model_json = json_file.read()
 
-    # use Keras model_from_json to make a loaded model
-    loaded_model = model_from_json(loaded_model_json)
+    # # use Keras model_from_json to make a loaded model
+    # loaded_model = model_from_json(loaded_model_json)
 
-    # load weights into new model
-    if loaded_model is not None:
-        loaded_model.load_weights(MODEL_URL)
-        model = loaded_model
+    # # load weights into new model
+    # if loaded_model is not None:
+    #     loaded_model.load_weights(MODEL_URL)
+    #     model = loaded_model
+
+    model = load_model(MODEL_URL)
 
     return (model, tokenizer)
 
