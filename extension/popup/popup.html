@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      border-radius: 10px;
+    }
+    body {
+      padding: 0 10px;
+    }
+  </style>
+</head>
+<body style="min-width:250px;min-height:400px">
+  <h1 class="px-5">accessify.</h1>
+  <p>Select which tags to target</p>
+  <input type="checkbox" name="images" checked />
+  <label>Set image descriptions</label>
+  <br />
+  <input type="checkbox" name="anchors" checked />
+  <label>Provide aria-labels to URLs</label>
+  <br />
+  <input type="checkbox" name="buttons" checked />
+  <label>Provide aria-labels to URLs</label>
+  <br />
+  <button id="preferences-button">
+    Update preferences
+  </button>
+</body>
+<script src="popup.js">
+</script>
+</html>

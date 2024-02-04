@@ -11,10 +11,11 @@
   },
   "action": {
     "default_icon": {
-        "128": "assets/logo.png"
-    }
+      "128": "assets/logo.png"
+    },
+    "default_popup": "popup/popup.html"
   },
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "content_scripts": [
     {
       "js": ["scripts/content.js"],
