@@ -6,11 +6,11 @@ from pydantic import BaseModel
 from typing import List, Optional
 from fastapi.middleware.cors import CORSMiddleware
 
-from sGPT import generate_caption, extract_features
+from sGPT import generate_caption
 from config import get_config
 from src import ElementType
 from src import connectGPT
-from utils import download_image
+from utils import download_image, delete_image
 
 
 configuration = get_config()
@@ -48,6 +48,7 @@ def populate_captions(image_index: int, image_url: str, captions: List[str]):
     image_path = download_image(image_url)
     caption: str = generate_caption(image_path)
     captions[image_index] = caption
+    deleted = delete_image(image_path)
 
 
 @app.post("/process-elements")
