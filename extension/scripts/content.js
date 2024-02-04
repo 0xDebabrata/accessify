@@ -55,9 +55,50 @@ const getAnchorTags = () => {
     }
 }
 
+const getUserPreferences = () => {
+    const key = "accessify-preferences"
+
+  chrome.storage.local.get(key, (response) => {
+    console.log("Storage response", response.key)
+  })
+
+    const storedPreferences = localStorage.getItem(key)
+    if (storedPreferences) {
+        return JSON.parse(storedPreferences)
+    } else {
+        return {
+            images: true,
+            buttons: true,
+            anchors: true,
+        }
+    }
+}
+
 const improveAccessibility = () => {
-    const {urls, anchorTags} = getAnchorTags()
-    const {img, imgTags} = getImages()
+    let urls = [], anchorTags = [], img = [], imgTags = []
+    const fetchedAnchorTags = getAnchorTags()
+    urls = fetchedAnchorTags.urls
+    anchorTags = fetchedAnchorTags.anchorTags
+    const fetchedImageTags = getImages()
+    img = fetchedImageTags.img
+    imgTags = fetchedImageTags.imgTags
+    /*
+    const userPreferences = getUserPreferences()
+
+    if (userPreferences.anchors) {
+      const fetchedAnchorTags = getAnchorTags()
+      urls = fetchedAnchorTags.urls
+      anchorTags = fetchedAnchorTags.anchorTags
+    }
+    if (userPreferences.images) {
+      const fetchedImageTags = getImages()
+      img = fetchedImageTags.urls
+      imgTags = fetchedImageTags.anchorTags
+    }
+
+    console.log(userPreferences)
+    console.log(urls)
+    */
 
     /**
      * 
@@ -97,3 +138,11 @@ const improveAccessibility = () => {
 }
 
 improveAccessibility()
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if(request.preferences) {
+            console.log(request.preferences)
+        }
+    }
+);

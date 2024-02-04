@@ -26,6 +26,7 @@ async function generateAccessibleContent(message) {
         })
     })
     const data = await resp.json()
+    // console.log("Server response", data)
     return data;
 }
 
