@@ -20,3 +20,17 @@ def download_image(url: str) -> str:
     path, message = urllib.request.urlretrieve(url, image_path)
 
     return path
+
+
+def delete_image(image_path: str) -> bool:
+    """
+    Deletes the image specified by path parameter.
+    """
+    try:
+        os.remove(image_path)
+        return True
+    except FileNotFoundError as e:
+        print(e.strerror)
+        return False
+    except OSError:
+        return False
