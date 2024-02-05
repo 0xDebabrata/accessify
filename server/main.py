@@ -11,6 +11,7 @@ from config import get_config
 from src import ElementType
 from src import connectGPT
 from utils import download_image, delete_image
+from config import get_redis
 
 
 configuration = get_config()
@@ -70,7 +71,19 @@ async def read_root(req: ProcessElementsBody):
         button_output: str = await connectGPT(req.buttons, ElementType.BUTTON)
         accessible_buttons = button_output.split("\n")
 
+    redis_conn = get_redis()
+
     for image_index, image_url in enumerate(images_url_list):
+        caption_cnt = redis_conn.exists(image_url)
+        print(caption_cnt)
+        if caption_cnt > 0:
+            existing_caption = redis_conn.get(name=image_url)
+            accessible_images[image_index] = existing_caption
+            print(
+                "existing caption for url ", image_url, " is ", existing_caption
+            )
+            continue
+
         th = Thread(
             target=populate_captions,
             args=(
@@ -82,9 +95,15 @@ async def read_root(req: ProcessElementsBody):
         th.start()
         image_processing_threads[image_index] = th
 
-    for th in image_processing_threads:
+    redis_conn.close()
+
+    for thread_idx, th in enumerate(image_processing_threads):
         if th is not None:
             th.join()
+            redis_conn.set(
+                name=images_url_list[thread_idx],
+                value=accessible_images[thread_idx],
+            )
 
     server_response = {
         "anchors": accessible_anchors,
@@ -92,7 +111,7 @@ async def read_root(req: ProcessElementsBody):
         "buttons": accessible_buttons,
     }
 
-    print(server_response)
+    # print(server_response)
     return server_response
 
 
