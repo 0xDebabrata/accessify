@@ -1,4 +1,4 @@
-const SERVER_BASE_URL = 'https://accessify-backend.onrender.com'
+const SERVER_BASE_URL = 'http://localhost:8080'
 const PROCESSING_API_ENDPOINT = '/process-elements'
 
 

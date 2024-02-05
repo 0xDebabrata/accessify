@@ -13,7 +13,7 @@ const getImages = () => {
 
     for (let e of imgs) {
         if (!e.alt) {
-            if (e.src.endsWith('jpg') || e.src.endsWith('png')) {
+            if (e.src.endsWith('jpg') || e.src.endsWith('png') || e.src.endsWith('jpeg')) {
                 filtered.push(e.src)
                 imgTags.push(e)
             }
@@ -117,7 +117,7 @@ const improveAccessibility = () => {
             anchorTags[i].ariaLabel = response.anchors[i]
         }
         for (let i = 0; i < response.images.length; i++) {
-            imgTags[i].alt = response.images[i].substr(9, response.images[i].length - 6 - 11)
+            imgTags[i].alt = response.images[i].substr(9, response.images[i].length - 16)
         }
 
         console.log("anchor and image tags updated successfully")
