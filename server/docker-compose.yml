@@ -8,3 +8,14 @@ services:
       - GPT_CHAT_URL='https://api.openai.com/v1/chat/completions'
     ports:
       - "8080:8080"
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    restart: always
+    # ports:
+    #   - 6379:6379
+    volumes:
+      - redis-volume-data:/data
+
+volumes:
+  redis-volume-data:
