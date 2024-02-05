@@ -5,7 +5,7 @@ from .enum_types import ElementType
 prompts = {
     ElementType.BUTTON: PromptDetails(
         sysMessage="make the elements more accessible, return code only, add all necessary attributes",
-        userMessage="user is gg",
+        userMessage="Make the following buttons responsive with the given examples\n\n\n",
         temperature=0.5,
     ),
     ElementType.ANCHOR: PromptDetails(
